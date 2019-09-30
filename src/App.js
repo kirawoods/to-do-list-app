@@ -32,9 +32,20 @@ class App extends Component {
 
     //update state with new list and reset newItem input
     this.setState({
-      newItem: "",
-      list
-    })
+      list,
+      newItem: ''
+    });
+  }
+
+  deleteItem(id) {
+    //copy current list of items 
+    const list = [...this.state.list];
+    
+    //filter out item being deleted 
+    const updatedList = list.filter(item => item.id !== id);
+
+    //set state to updated list 
+    this.setState({list: updatedList});
   }
 
   render (){
@@ -50,10 +61,26 @@ class App extends Component {
           onChange = {e => this.updateInput("newItem", e.target.value)}
           />
           <button 
-            onClick = {() => this.addItem}
+            onClick = {() => this.addItem()}
           >
             Add
           </button>
+          <br/>
+          <ul>
+            {this.state.list.map(item => {
+              return (
+              <li key = {item.id}>
+                {item.value}
+                <button 
+                onClick={() => this.deleteItem(item.id)}>
+                  X
+                </button>
+              </li>
+              );
+            })
+
+            }
+          </ul>
         </div>
       </div>
     );
